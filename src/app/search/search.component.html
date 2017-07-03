@@ -1,0 +1,76 @@
+<app-menu></app-menu>
+
+<div class="search-component">
+  <md-input-container>
+  <input placeholder="Search by name or phone" class="searchfield" type="text" #searchBox  mdInput (keyup)="search(searchBox.value, $event)" />
+  </md-input-container>
+  <div *ngIf="isShowList && heroes | async; let listArr;">
+  <div class="search-suggesion" id="isShow" (click)="clickout($event)" [ngClass]="{'full': listArr.length <= 5}">
+    <div *ngFor="let hero of listArr"
+         (click)="gotoDetail(hero)" class="search-result" >
+      <span *ngIf="checkAlphabet">{{hero.name}}</span>
+      <span *ngIf="!checkAlphabet">{{hero.phone}}</span>
+
+
+    </div>
+  </div>
+</div>
+</div>
+<div class="loader-box" *ngIf="loading || showloader">
+  <div class="loader"><md-spinner color="accent"></md-spinner></div>
+</div>
+
+<div  class="search-box" *ngIf="heroes | async; let lisitems;">
+<div *ngIf="lisitems.length > 0">
+<h3 class="heading-style-one">Search Result</h3>
+<div class="search-flex-layout"  data-infinite-scroll debounce
+     [infiniteScrollDistance]="2"
+     [infiniteScrollUpDistance]="1.5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="true"
+     (scrolled)="onScrollDown(searchBox.value)">
+
+  <div class="search-card" *ngFor="let hero of lisitems">
+  <md-card>
+    <md-card-header>
+      <img md-card-avatar src="{{hero.picture}}">
+      <md-card-title>Patien Name</md-card-title>
+      <md-card-subtitle>Hospital Name</md-card-subtitle>
+    </md-card-header>
+    <img md-card-image src="{{hero.picture}}" width="50px">
+    <md-card-content>
+     <span class="f-bold"> Name: </span>{{hero.name}}, &nbsp;
+      <span class="f-bold"> Phone: </span>{{hero.phone}}, &nbsp;
+     <span class="f-bold"> Email: </span>{{hero.email}}, &nbsp;
+      <span class="f-bold"> Age: </span>{{hero.age}}
+
+
+    </md-card-content>
+    <md-card-actions class="flex-center">
+      <button md-mini-fab title="view" (click)="gotoDetail(hero)"><md-icon>&#xE8A0;</md-icon></button>
+      <button  color="warn" title="delete" md-mini-fab (click)="delete(hero, searchBox.value); $event.stopPropagation()"><md-icon>&#xE872;</md-icon></button>
+
+    </md-card-actions>
+  </md-card>
+  </div>
+</div>
+</div>
+</div>
+<!--<div class="row">
+  <div class="col xl3 l4 m6 s12" *ngFor="let hero of heroes | async">
+    <md-card class="example-card">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image"></div>
+    <md-card-title>Patien Name</md-card-title>
+    <md-card-subtitle>Hospital Name</md-card-subtitle>
+  </md-card-header>
+  <img md-card-image src="assets/images/avatar.png" width="50px">
+  <md-card-content>
+    Name : {{hero.name}}
+  </md-card-content>
+  <md-card-actions>
+    <button md-button (click)="gotoDetail(hero)">Read More</button>
+  </md-card-actions>
+</md-card>
+  </div>
+</div>-->
